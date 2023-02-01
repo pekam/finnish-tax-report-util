@@ -1,6 +1,7 @@
+import { parse } from "csv/sync";
 import * as fs from "fs";
 import path from "path";
-import { filter, map, pipe } from "remeda";
+import { filter, pipe } from "remeda";
 
 const propertiesFilePath = path.join(__dirname, "..", "properties.json");
 
@@ -25,8 +26,11 @@ if (!ibReportPath) {
 const data: string[][] = pipe(
   ibReportPath,
   (path) => fs.readFileSync(path, "utf8"),
-  (s) => s.split("\n"),
-  map((row) => row.split(","))
+  (str) =>
+    parse(str, {
+      relaxColumnCount: true,
+      relaxQuotes: true, // Notes in the end of the CSV contain un-escaped quotes
+    })
 );
 
 const stockTradeRows = pipe(
