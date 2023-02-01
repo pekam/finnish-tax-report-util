@@ -1,7 +1,11 @@
 import { parse } from "csv/sync";
 import * as fs from "fs";
+import { DateTime } from "luxon";
 import path from "path";
 import { filter, pipe } from "remeda";
+
+// TODO is it always this or the exchange time zone of traded asset?
+const tradeDataTimeZone = "America/New_York";
 
 const propertiesFilePath = path.join(__dirname, "..", "properties.json");
 
@@ -40,4 +44,35 @@ const stockTradeRows = pipe(
   )
 );
 
-console.log(stockTradeRows.slice(0, 10));
+const transactions = stockTradeRows.map((row) => {
+  // https://www.ibkrguides.com/reportingreference/reportguide/trades_default.htm
+  const [
+    currency,
+    symbol,
+    dateTime,
+    quantity,
+    tPrice, // transaction price
+    cPrice, // closing price
+    proceeds, // how much USD balance changed (excl. fee)
+    commFee,
+    basis,
+    realizedPnl,
+    mtmPnl,
+    code,
+  ] = row.slice(4);
+
+  return {
+    symbol,
+    currency,
+    dateTime: DateTime.fromFormat(dateTime, "yyyy-MM-dd, HH:mm:ss", {
+      zone: tradeDataTimeZone,
+    }),
+    quantity: parseFloat(quantity),
+    price: parseFloat(tPrice),
+    proceeds: parseFloat(proceeds),
+    fee: parseFloat(commFee),
+    realizedPnl: parseFloat(realizedPnl),
+  };
+});
+
+console.log(transactions.slice(0, 2));
