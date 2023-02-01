@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import path from "path";
+import { map, pipe } from "remeda";
 
 const propertiesFilePath = path.join(__dirname, "..", "properties.json");
 
@@ -21,4 +22,11 @@ if (!ibReportPath) {
   throw invalidPropsError;
 }
 
-console.log(ibReportPath);
+const data: string[][] = pipe(
+  ibReportPath,
+  (path) => fs.readFileSync(path, "utf8"),
+  (s) => s.split("\n"),
+  map((row) => row.split(","))
+);
+
+console.log(data.slice(0, 10));
