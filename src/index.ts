@@ -1,34 +1,16 @@
 import { parse } from "csv/sync";
 import * as fs from "fs";
 import { DateTime } from "luxon";
-import path from "path";
 import { filter, pipe } from "remeda";
+import { readProperties } from "./properties";
 
 // TODO is it always this or the exchange time zone of traded asset?
 const tradeDataTimeZone = "America/New_York";
 
-const propertiesFilePath = path.join(__dirname, "..", "properties.json");
-
-const invalidPropsError = Error(
-  'You need to create properties.json file in the project root with content {"ibReportPath": "path_to_your_report"}'
-);
-
-if (!fs.existsSync(propertiesFilePath)) {
-  throw invalidPropsError;
-}
-
-const properties: { ibReportPath?: string } = JSON.parse(
-  fs.readFileSync(path.join(__dirname, "..", "properties.json"), "utf8")
-);
-
-const ibReportPath = properties.ibReportPath;
-
-if (!ibReportPath) {
-  throw invalidPropsError;
-}
+const properties = readProperties();
 
 const data: string[][] = pipe(
-  ibReportPath,
+  properties.ibReportPath,
   (path) => fs.readFileSync(path, "utf8"),
   (str) =>
     parse(str, {
