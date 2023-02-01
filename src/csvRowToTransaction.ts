@@ -20,6 +20,12 @@ export function csvRowToTransaction(row: string[]) {
     code,
   ] = row.slice(4);
 
+  if (currency !== "USD") {
+    throw Error(
+      "Only USD transactions are supported at the moment, found " + currency
+    );
+  }
+
   return {
     symbol,
     currency,
