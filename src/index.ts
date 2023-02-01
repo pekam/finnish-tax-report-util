@@ -2,15 +2,14 @@ import { parse } from "csv/sync";
 import * as fs from "fs";
 import { DateTime } from "luxon";
 import { filter, pipe } from "remeda";
+import { getEurUsd } from "./getEurUsd";
 import { readProperties } from "./properties";
 
 // TODO is it always this or the exchange time zone of traded asset?
 const tradeDataTimeZone = "America/New_York";
 
-const properties = readProperties();
-
 const data: string[][] = pipe(
-  properties.ibReportPath,
+  readProperties().ibReportPath,
   (path) => fs.readFileSync(path, "utf8"),
   (str) =>
     parse(str, {
@@ -58,3 +57,5 @@ const transactions = stockTradeRows.map((row) => {
 });
 
 console.log(transactions.slice(0, 2));
+
+console.log(transactions.map((t) => getEurUsd(t.dateTime)).slice(0, 2));
