@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import path from "path";
-import { map, pipe } from "remeda";
+import { filter, map, pipe } from "remeda";
 
 const propertiesFilePath = path.join(__dirname, "..", "properties.json");
 
@@ -29,4 +29,11 @@ const data: string[][] = pipe(
   map((row) => row.split(","))
 );
 
-console.log(data.slice(0, 10));
+const stockTradeRows = pipe(
+  data,
+  filter(
+    (row) => row[0] === "Trades" && row[1] === "Data" && row[3] === "Stocks"
+  )
+);
+
+console.log(stockTradeRows.slice(0, 10));
