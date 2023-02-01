@@ -3,7 +3,7 @@ import { DateTime } from "luxon";
 // TODO is it always this or the exchange time zone of traded asset?
 const tradeDataTimeZone = "America/New_York";
 
-export function csvRowToTransaction(row: string[]) {
+export function ibTradeRowToObject(row: string[]) {
   // https://www.ibkrguides.com/reportingreference/reportguide/trades_default.htm
   const [
     currency,

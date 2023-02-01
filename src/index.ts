@@ -1,9 +1,32 @@
 import { parse } from "csv/sync";
 import * as fs from "fs";
 import { filter, map, pipe } from "remeda";
-import { csvRowToTransaction } from "./csvRowToTransaction";
-import { getEurUsd } from "./getEurUsd";
+import { convertTransaction } from "./convertTransaction";
+import { ibTradeRowToObject } from "./ibTradeRowToObject";
 import { readProperties } from "./properties";
+
+/**
+ * Single row in the output CSV that will be provided to Vero.
+ */
+export interface Transaction {
+  time: string;
+  symbol: string;
+  quantity: number;
+
+  priceUsd: number;
+  priceEur: number;
+
+  feeUsd: number;
+  feeEur: number;
+
+  balanceChangeUsd: number;
+  balanceChangeEur: number;
+
+  realizedPnlUsd: number;
+  realizedPnlEur: number;
+
+  eurUsd: number;
+}
 
 const transactions = pipe(
   readProperties().ibReportPath,
@@ -17,9 +40,8 @@ const transactions = pipe(
     (row: string[]) =>
       row[0] === "Trades" && row[1] === "Data" && row[3] === "Stocks"
   ),
-  map(csvRowToTransaction)
+  map(ibTradeRowToObject),
+  map(convertTransaction)
 );
 
 console.log(transactions.slice(0, 2));
-
-console.log(transactions.map((t) => getEurUsd(t.dateTime)).slice(0, 2));
