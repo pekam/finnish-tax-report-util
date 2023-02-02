@@ -29,7 +29,7 @@ export function convertTransaction(
     priceEur: toEuros(priceUsd),
 
     feeUsd,
-    feeEur: toEuros(priceUsd),
+    feeEur: toEuros(feeUsd),
 
     balanceChangeUsd,
     balanceChangeEur: toEuros(balanceChangeUsd),
