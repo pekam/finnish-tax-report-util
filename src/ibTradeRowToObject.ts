@@ -26,16 +26,19 @@ export function ibTradeRowToObject(row: string[]) {
     );
   }
 
+  // Comma used as a thousand-separator
+  const toNumber = (s: string) => parseFloat(s.replaceAll(",", ""));
+
   return {
     symbol,
     currency,
     dateTime: DateTime.fromFormat(dateTime, "yyyy-MM-dd, HH:mm:ss", {
       zone: tradeDataTimeZone,
     }),
-    quantity: parseFloat(quantity),
-    price: parseFloat(tPrice),
-    proceeds: parseFloat(proceeds),
-    fee: parseFloat(commFee),
-    realizedPnl: parseFloat(realizedPnl),
+    quantity: toNumber(quantity),
+    price: toNumber(tPrice),
+    proceeds: toNumber(proceeds),
+    fee: toNumber(commFee),
+    realizedPnl: toNumber(realizedPnl),
   };
 }
