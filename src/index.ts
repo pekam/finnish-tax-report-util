@@ -1,7 +1,8 @@
 import { parse } from "csv/sync";
 import * as fs from "fs";
-import { filter, map, pipe } from "remeda";
+import { filter, map, pipe, sortBy } from "remeda";
 import { convertTransaction } from "./convertTransaction";
+import { getSummary } from "./getSummary";
 import { ibTradeRowToObject } from "./ibTradeRowToObject";
 import { readProperties } from "./properties";
 
@@ -11,6 +12,9 @@ import { readProperties } from "./properties";
 export interface Transaction {
   time: string;
   symbol: string;
+  /**
+   * Signed (negative if selling).
+   */
   quantity: number;
 
   priceUsd: number;
@@ -19,7 +23,13 @@ export interface Transaction {
   feeUsd: number;
   feeEur: number;
 
+  /**
+   * Excluding fees.
+   */
   balanceChangeUsd: number;
+  /**
+   * Excluding fees.
+   */
   balanceChangeEur: number;
 
   realizedPnlUsd: number;
@@ -41,7 +51,10 @@ const transactions = pipe(
       row[0] === "Trades" && row[1] === "Data" && row[3] === "Stocks"
   ),
   map(ibTradeRowToObject),
-  map(convertTransaction)
+  map(convertTransaction),
+  sortBy((t) => t.time)
 );
 
 console.log(transactions.slice(0, 2));
+
+console.log(getSummary(transactions).unclosedEntries);
