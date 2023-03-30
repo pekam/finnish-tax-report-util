@@ -1,5 +1,4 @@
 import { DateTime } from "luxon";
-import { addEurProps } from "./addEurProps";
 import { getEurUsdMap } from "./getEurUsd";
 import { readIbTransactionsFromCSV } from "./ib/readIbTransactionsFromCSV";
 import { processTransactions } from "./process-transactions/processTransactions";
@@ -36,11 +35,7 @@ const eurUsdMap = getEurUsdMap();
 
 const transactions = readIbTransactionsFromCSV();
 
-const transactionsWithEuros: TransactionWithEuros[] = transactions.map(
-  addEurProps(eurUsdMap)
-);
-
-const result = processTransactions(transactionsWithEuros);
+const result = processTransactions(transactions, eurUsdMap);
 
 console.log(transactions.slice(0, 2));
 

@@ -1,5 +1,5 @@
-import { Transaction, TransactionWithEuros } from ".";
-import { EurUsdMap, getEurUsd } from "./getEurUsd";
+import { Transaction, TransactionWithEuros } from "..";
+import { EurUsdMap, getEurUsd } from "../getEurUsd";
 
 export const addEurProps =
   (eurUsdMap: EurUsdMap) =>

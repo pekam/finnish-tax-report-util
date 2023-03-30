@@ -1,6 +1,13 @@
-import { sumBy } from "remeda";
-import { HandledTransaction, TransactionWithEuros, UnclosedEntry } from "..";
+import { map, pipe, reduce, sumBy } from "remeda";
+import {
+  HandledTransaction,
+  Transaction,
+  TransactionWithEuros,
+  UnclosedEntry,
+} from "..";
+import { EurUsdMap } from "../getEurUsd";
 import { addEntry } from "./addEntry";
+import { addEurProps } from "./addEurProps";
 import { closeEntries } from "./closeEntries";
 
 export interface State {
@@ -8,13 +15,20 @@ export interface State {
   handled: HandledTransaction[];
 }
 
-export function processTransactions(transactions: TransactionWithEuros[]) {
+export function processTransactions(
+  transactions: Transaction[],
+  eurUsdMap: EurUsdMap
+) {
   const initialState: State = {
     unclosed: {},
     handled: [],
   };
 
-  return transactions.reduce(handleTransaction, initialState);
+  return pipe(
+    transactions,
+    map(addEurProps(eurUsdMap)),
+    reduce(handleTransaction, initialState)
+  );
 }
 
 function handleTransaction(state: State, transaction: TransactionWithEuros) {
