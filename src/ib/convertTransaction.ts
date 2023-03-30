@@ -1,5 +1,4 @@
 import { Transaction } from "..";
-import { getEurUsd } from "../getEurUsd";
 import { ibTradeRowToObject } from "./ibTradeRowToObject";
 
 const finnishTimezone = "Europe/Helsinki";
@@ -7,36 +6,13 @@ const finnishTimezone = "Europe/Helsinki";
 export function convertTransaction(
   rawTransaction: ReturnType<typeof ibTradeRowToObject>
 ): Transaction {
-  const {
-    symbol,
-    dateTime,
-    quantity,
-    fee: feeUsd,
-    price: priceUsd,
-    proceeds: balanceChangeUsd,
-    realizedPnl: realizedPnlUsd,
-  } = rawTransaction;
-
-  const eurUsd = getEurUsd(dateTime);
-  const toEuros = (usd: number) => usd / eurUsd;
+  const { symbol, dateTime, quantity, fee: feeUsd, price } = rawTransaction;
 
   return {
-    time: dateTime.setZone(finnishTimezone).toISO(),
     symbol,
+    time: dateTime.setZone(finnishTimezone),
     quantity,
-
-    priceUsd,
-    priceEur: toEuros(priceUsd),
-
+    price,
     feeUsd,
-    feeEur: toEuros(feeUsd),
-
-    balanceChangeUsd,
-    balanceChangeEur: toEuros(balanceChangeUsd),
-
-    realizedPnlUsd,
-    realizedPnlEur: toEuros(realizedPnlUsd),
-
-    eurUsd,
   };
 }

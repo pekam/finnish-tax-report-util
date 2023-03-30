@@ -1,8 +1,9 @@
-import { getEurProps, HandledTrans, State, Trans } from "./processTransactions";
+import { HandledTransaction, Transaction } from "..";
+import { getEurProps, State } from "./processTransactions";
 
-export function addEntry(state: State, transaction: Trans): State {
+export function addEntry(state: State, transaction: Transaction): State {
   const { symbol } = transaction;
-  const handled: HandledTrans = {
+  const handled: HandledTransaction = {
     ...transaction,
     ...getEurProps(transaction),
     closedPnlExcludingFees: 0,

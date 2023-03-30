@@ -1,40 +1,36 @@
-import { getSummary } from "./getSummary";
+import { DateTime } from "luxon";
 import { readIbTransactionsFromCSV } from "./ib/readIbTransactionsFromCSV";
+import { processTransactions } from "./process-transactions/processTransactions";
 
 /**
- * Single row in the output CSV that will be provided to Vero.
+ * Input transaction, provided from the broker.
  */
 export interface Transaction {
-  time: string;
   symbol: string;
+  time: DateTime;
   /**
-   * Signed (negative if selling).
+   * Negative if selling
    */
   quantity: number;
-
-  priceUsd: number;
-  priceEur: number;
-
+  price: number;
   feeUsd: number;
-  feeEur: number;
+}
 
-  /**
-   * Excluding fees.
-   */
-  balanceChangeUsd: number;
-  /**
-   * Excluding fees.
-   */
+export interface HandledTransaction extends Transaction {
   balanceChangeEur: number;
-
-  realizedPnlUsd: number;
-  realizedPnlEur: number;
-
+  closedPnlExcludingFees: number;
   eurUsd: number;
+  feeEur: number;
+}
+
+export interface UnclosedEntry extends HandledTransaction {
+  remaining: number;
 }
 
 const transactions = readIbTransactionsFromCSV();
 
 console.log(transactions.slice(0, 2));
 
-console.log(getSummary(transactions).unclosedEntries);
+console.log(processTransactions(transactions));
+
+// console.log(getSummary(transactions).unclosedEntries);

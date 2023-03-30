@@ -1,49 +1,24 @@
-import { DateTime } from "luxon";
 import { sumBy } from "remeda";
+import { HandledTransaction, Transaction, UnclosedEntry } from "..";
 import { getEurUsd } from "../getEurUsd";
 import { addEntry } from "./addEntry";
 import { closeEntries } from "./closeEntries";
 
-/**
- * Input transaction, provided from the broker.
- */
-export interface Trans {
-  symbol: string;
-  time: DateTime;
-  /**
-   * Negative if selling
-   */
-  quantity: number;
-  price: number;
-  feeUsd: number;
-}
-
-export interface HandledTrans extends Trans {
-  balanceChangeEur: number;
-  closedPnlExcludingFees: number;
-  eurUsd: number;
-  feeEur: number;
-}
-
-interface UnclosedEntry extends HandledTrans {
-  remaining: number;
-}
-
 export interface State {
   unclosed: { [key: string]: UnclosedEntry[] };
-  handled: HandledTrans[];
+  handled: HandledTransaction[];
 }
 
-export function processTransactions(transactions: Trans[]) {
+export function processTransactions(transactions: Transaction[]) {
   const initialState: State = {
     unclosed: {},
     handled: [],
   };
 
-  transactions.reduce(handleTransaction, initialState);
+  return transactions.reduce(handleTransaction, initialState);
 }
 
-function handleTransaction(state: State, transaction: Trans) {
+function handleTransaction(state: State, transaction: Transaction) {
   const balance = getBalance(state, transaction.symbol);
 
   if (balance === 0 || transaction.quantity > 0 === balance > 0) {
@@ -53,7 +28,12 @@ function handleTransaction(state: State, transaction: Trans) {
   }
 }
 
-export function getEurProps({ time, quantity, price, feeUsd: fee }: Trans) {
+export function getEurProps({
+  time,
+  quantity,
+  price,
+  feeUsd: fee,
+}: Transaction) {
   const eurUsd = getEurUsd(time);
   const balanceChangeEur = (quantity * price) / eurUsd;
   const feeEur = fee / eurUsd;

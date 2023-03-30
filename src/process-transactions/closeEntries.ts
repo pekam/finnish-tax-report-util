@@ -1,7 +1,8 @@
 import { identity, sumBy } from "remeda";
-import { getEurProps, HandledTrans, State, Trans } from "./processTransactions";
+import { HandledTransaction, Transaction } from "..";
+import { getEurProps, State } from "./processTransactions";
 
-export function closeEntries(state: State, transaction: Trans) {
+export function closeEntries(state: State, transaction: Transaction) {
   let remaining = transaction.quantity;
   let entryBalanceChangesEur: number[] = [];
 
@@ -45,7 +46,7 @@ export function closeEntries(state: State, transaction: Trans) {
 
   const closedPnlExcludingFees = closedEntriesValue + eurProps.balanceChangeEur;
 
-  const handledTransaction: HandledTrans = {
+  const handledTransaction: HandledTransaction = {
     ...transaction,
     ...eurProps,
     closedPnlExcludingFees,
