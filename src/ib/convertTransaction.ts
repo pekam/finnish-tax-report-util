@@ -1,5 +1,5 @@
-import { Transaction } from ".";
-import { getEurUsd } from "./getEurUsd";
+import { Transaction } from "..";
+import { getEurUsd } from "../getEurUsd";
 import { ibTradeRowToObject } from "./ibTradeRowToObject";
 
 const finnishTimezone = "Europe/Helsinki";
