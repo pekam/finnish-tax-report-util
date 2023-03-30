@@ -20,7 +20,7 @@ export interface Transaction {
 
 export interface TransactionWithEuros extends Transaction {
   eurUsd: number;
-  balanceChangeEur: number;
+  balanceChangeEurExcludingFees: number;
   feeEur: number;
 }
 

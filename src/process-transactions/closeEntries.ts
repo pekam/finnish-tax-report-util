@@ -23,7 +23,7 @@ export function closeEntries(state: State, transaction: TransactionWithEuros) {
     if (oldestUnclosedAbsoluteRemaining < remaining) {
       entryBalanceChangesEur.push(
         (oldestUnclosedAbsoluteRemaining / Math.abs(oldestUnclosed.quantity)) *
-          oldestUnclosed.balanceChangeEur
+          oldestUnclosed.balanceChangeEurExcludingFees
       );
       unclosed.shift();
       remaining += oldestUnclosed.remaining;
@@ -33,7 +33,7 @@ export function closeEntries(state: State, transaction: TransactionWithEuros) {
     else {
       entryBalanceChangesEur.push(
         (remaining / Math.abs(oldestUnclosed.quantity)) *
-          oldestUnclosed.balanceChangeEur
+          oldestUnclosed.balanceChangeEurExcludingFees
       );
       oldestUnclosed.remaining += remaining;
       remaining = 0;
@@ -43,7 +43,7 @@ export function closeEntries(state: State, transaction: TransactionWithEuros) {
   const closedEntriesValue = sumBy(entryBalanceChangesEur, identity);
 
   const closedPnlExcludingFees =
-    closedEntriesValue + transaction.balanceChangeEur;
+    closedEntriesValue + transaction.balanceChangeEurExcludingFees;
 
   const handledTransaction: HandledTransaction = {
     ...transaction,

@@ -8,8 +8,13 @@ export const addEurProps =
     const eurUsd = getEurUsd(time, eurUsdMap);
     const toEur = (usd: number) => usd / eurUsd;
 
-    const balanceChangeEur = toEur(quantity * price);
+    const balanceChangeEurExcludingFees = toEur(quantity * price);
     const feeEur = toEur(fee);
 
-    return { ...transaction, eurUsd, balanceChangeEur, feeEur };
+    return {
+      ...transaction,
+      eurUsd,
+      balanceChangeEurExcludingFees,
+      feeEur,
+    };
   };
