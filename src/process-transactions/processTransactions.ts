@@ -1,9 +1,5 @@
 import { sumBy } from "remeda";
-import {
-  HandledTransaction,
-  TransactionWithCurrencyRate,
-  UnclosedEntry,
-} from "..";
+import { HandledTransaction, TransactionWithEuros, UnclosedEntry } from "..";
 import { addEntry } from "./addEntry";
 import { closeEntries } from "./closeEntries";
 
@@ -12,9 +8,7 @@ export interface State {
   handled: HandledTransaction[];
 }
 
-export function processTransactions(
-  transactions: TransactionWithCurrencyRate[]
-) {
+export function processTransactions(transactions: TransactionWithEuros[]) {
   const initialState: State = {
     unclosed: {},
     handled: [],
@@ -23,10 +17,7 @@ export function processTransactions(
   return transactions.reduce(handleTransaction, initialState);
 }
 
-function handleTransaction(
-  state: State,
-  transaction: TransactionWithCurrencyRate
-) {
+function handleTransaction(state: State, transaction: TransactionWithEuros) {
   const balance = getBalance(state, transaction.symbol);
 
   if (balance === 0 || transaction.quantity > 0 === balance > 0) {

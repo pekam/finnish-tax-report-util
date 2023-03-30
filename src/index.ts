@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
-import { getEurUsd, getEurUsdMap } from "./getEurUsd";
+import { addEurProps } from "./addEurProps";
+import { getEurUsdMap } from "./getEurUsd";
 import { readIbTransactionsFromCSV } from "./ib/readIbTransactionsFromCSV";
 import { processTransactions } from "./process-transactions/processTransactions";
 
@@ -17,14 +18,14 @@ export interface Transaction {
   feeUsd: number;
 }
 
-export interface TransactionWithCurrencyRate extends Transaction {
+export interface TransactionWithEuros extends Transaction {
   eurUsd: number;
+  balanceChangeEur: number;
+  feeEur: number;
 }
 
-export interface HandledTransaction extends TransactionWithCurrencyRate {
-  balanceChangeEur: number;
+export interface HandledTransaction extends TransactionWithEuros {
   closedPnlExcludingFees: number;
-  feeEur: number;
 }
 
 export interface UnclosedEntry extends HandledTransaction {
@@ -34,13 +35,12 @@ export interface UnclosedEntry extends HandledTransaction {
 const eurUsdMap = getEurUsdMap();
 
 const transactions = readIbTransactionsFromCSV();
-const transactionsWithCurrencyRates: TransactionWithCurrencyRate[] =
-  transactions.map((t) => ({
-    ...t,
-    eurUsd: getEurUsd(t.time, eurUsdMap),
-  }));
 
-const result = processTransactions(transactionsWithCurrencyRates);
+const transactionsWithEuros: TransactionWithEuros[] = transactions.map(
+  addEurProps(eurUsdMap)
+);
+
+const result = processTransactions(transactionsWithEuros);
 
 console.log(transactions.slice(0, 2));
 

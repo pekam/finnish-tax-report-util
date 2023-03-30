@@ -1,12 +1,8 @@
 import { identity, sumBy } from "remeda";
-import { HandledTransaction, TransactionWithCurrencyRate } from "..";
-import { getEurProps } from "./getEurProps";
+import { HandledTransaction, TransactionWithEuros } from "..";
 import { State } from "./processTransactions";
 
-export function closeEntries(
-  state: State,
-  transaction: TransactionWithCurrencyRate
-) {
+export function closeEntries(state: State, transaction: TransactionWithEuros) {
   let remaining = transaction.quantity;
   let entryBalanceChangesEur: number[] = [];
 
@@ -46,13 +42,11 @@ export function closeEntries(
 
   const closedEntriesValue = sumBy(entryBalanceChangesEur, identity);
 
-  const eurProps = getEurProps(transaction);
-
-  const closedPnlExcludingFees = closedEntriesValue + eurProps.balanceChangeEur;
+  const closedPnlExcludingFees =
+    closedEntriesValue + transaction.balanceChangeEur;
 
   const handledTransaction: HandledTransaction = {
     ...transaction,
-    ...eurProps,
     closedPnlExcludingFees,
   };
 
