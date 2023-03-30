@@ -1,8 +1,12 @@
 import { identity, sumBy } from "remeda";
-import { HandledTransaction, Transaction } from "..";
-import { getEurProps, State } from "./processTransactions";
+import { HandledTransaction, TransactionWithCurrencyRate } from "..";
+import { getEurProps } from "./getEurProps";
+import { State } from "./processTransactions";
 
-export function closeEntries(state: State, transaction: Transaction) {
+export function closeEntries(
+  state: State,
+  transaction: TransactionWithCurrencyRate
+) {
   let remaining = transaction.quantity;
   let entryBalanceChangesEur: number[] = [];
 
