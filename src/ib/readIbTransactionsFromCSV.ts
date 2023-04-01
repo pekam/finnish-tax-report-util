@@ -1,13 +1,13 @@
 import { parse } from "csv/sync";
 import * as fs from "fs";
 import { filter, map, pipe, sortBy } from "remeda";
-import { readProperties } from "../properties";
+import { getProperties } from "../properties";
 import { convertTransaction } from "./convertTransaction";
 import { ibTradeRowToObject } from "./ibTradeRowToObject";
 
 export function readIbTransactionsFromCSV() {
   return pipe(
-    readProperties().ibReportPath,
+    getProperties().ibReportPath,
     (path) => fs.readFileSync(path, "utf8"),
     (str) =>
       parse(str, {

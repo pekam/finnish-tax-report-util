@@ -2,12 +2,12 @@ import { parse } from "csv/sync";
 import * as fs from "fs";
 import { DateTime } from "luxon";
 import { mapToObj } from "remeda";
-import { readProperties } from "./properties";
+import { getProperties } from "./properties";
 
 export type EurUsdMap = Record<string, number | undefined>;
 
 export function getEurUsdMap(): EurUsdMap {
-  const path = readProperties().eurUsdPath;
+  const path = getProperties().eurUsdPath;
 
   const rawData: string[][] = parse(
     fs.readFileSync(path, "utf8").replaceAll('"', "") // all values are quoted

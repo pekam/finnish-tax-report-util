@@ -1,12 +1,12 @@
 import * as fs from "fs";
 import * as path from "path";
 import { State } from "../process-transactions/processTransactions";
-import { readProperties } from "../properties";
+import { getProperties } from "../properties";
 import { generatePositionsCSV } from "./generatePositionsCSV";
 import { generateTransactionsCSV } from "./generateTransactionsCSV";
 
 export function writeResult(state: State) {
-  const { resultDirPath } = readProperties();
+  const { resultDirPath } = getProperties();
 
   const transactionsCSV = generateTransactionsCSV(state.handled);
   fs.writeFileSync(
