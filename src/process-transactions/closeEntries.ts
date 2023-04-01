@@ -23,7 +23,7 @@ export function closeEntries(state: State, transaction: TransactionWithEuros) {
     const oldestUnclosedAbsoluteRemaining = Math.abs(oldestUnclosed.remaining);
 
     // Remove oldest entry, reduce remaining
-    if (oldestUnclosedAbsoluteRemaining < Math.abs(remaining)) {
+    if (oldestUnclosedAbsoluteRemaining <= Math.abs(remaining)) {
       const closedQuantityProportion =
         oldestUnclosedAbsoluteRemaining / Math.abs(oldestUnclosed.quantity);
       entryBalanceChangesEur.push(
@@ -31,6 +31,9 @@ export function closeEntries(state: State, transaction: TransactionWithEuros) {
       );
 
       unclosed.shift();
+      if (!unclosed.length) {
+        delete state.unclosed[transaction.symbol];
+      }
       remaining += oldestUnclosed.remaining;
     }
 
