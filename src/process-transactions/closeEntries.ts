@@ -4,9 +4,12 @@ import { State } from "./processTransactions";
 
 export function closeEntries(state: State, transaction: TransactionWithEuros) {
   let remaining = transaction.quantity;
+
+  // Balance changes of the entry transactions (or their parts) closed by the
+  // incoming transaction.
   let entryBalanceChangesEur: number[] = [];
 
-  while (Math.abs(remaining) > 0) {
+  while (remaining !== 0) {
     const unclosed = state.unclosed[transaction.symbol];
     if (!unclosed.length) {
       throw Error(
@@ -20,30 +23,34 @@ export function closeEntries(state: State, transaction: TransactionWithEuros) {
     const oldestUnclosedAbsoluteRemaining = Math.abs(oldestUnclosed.remaining);
 
     // Remove oldest entry, reduce remaining
-    if (oldestUnclosedAbsoluteRemaining < remaining) {
+    if (oldestUnclosedAbsoluteRemaining < Math.abs(remaining)) {
+      const closedQuantityProportion =
+        oldestUnclosedAbsoluteRemaining / Math.abs(oldestUnclosed.quantity);
       entryBalanceChangesEur.push(
-        (oldestUnclosedAbsoluteRemaining / Math.abs(oldestUnclosed.quantity)) *
-          oldestUnclosed.balanceChangeEurExcludingFees
+        closedQuantityProportion * oldestUnclosed.balanceChangeEurExcludingFees
       );
+
       unclosed.shift();
       remaining += oldestUnclosed.remaining;
     }
 
     // Reduce oldest entry, finish
     else {
+      const closedQuantityProportion =
+        Math.abs(remaining) / Math.abs(oldestUnclosed.quantity);
       entryBalanceChangesEur.push(
-        (remaining / Math.abs(oldestUnclosed.quantity)) *
-          oldestUnclosed.balanceChangeEurExcludingFees
+        closedQuantityProportion * oldestUnclosed.balanceChangeEurExcludingFees
       );
+
       oldestUnclosed.remaining += remaining;
       remaining = 0;
     }
   }
 
-  const closedEntriesValue = sumBy(entryBalanceChangesEur, identity);
+  const closedEntriesBalanceChange = sumBy(entryBalanceChangesEur, identity);
 
   const closedPnlExcludingFees =
-    closedEntriesValue + transaction.balanceChangeEurExcludingFees;
+    closedEntriesBalanceChange + transaction.balanceChangeEurExcludingFees;
 
   const handledTransaction: HandledTransaction = {
     ...transaction,
