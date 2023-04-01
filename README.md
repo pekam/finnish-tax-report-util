@@ -21,7 +21,7 @@
 
 ## Limitations
 
-- Currently expects the USD as the currency used to buy/sell stocks
+- Currently expects USD as the currency used to buy/sell stocks
 - Doesn't handle a situation where a single transaction acts as both an exit and
   an entry
   - For example: You have 1 stock of Apple, and you sell 2. This exits the
