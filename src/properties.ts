@@ -12,14 +12,17 @@ export function readProperties() {
     throw invalidPropsError;
   }
 
-  const properties: { ibReportPath?: string; eurUsdPath?: string } = JSON.parse(
-    fs.readFileSync(propertiesFilePath, "utf8")
-  );
+  const properties: {
+    ibReportPath?: string;
+    eurUsdPath?: string;
+    resultDirPath?: string;
+  } = JSON.parse(fs.readFileSync(propertiesFilePath, "utf8"));
 
-  const { ibReportPath, eurUsdPath } = properties;
+  const { ibReportPath, eurUsdPath, resultDirPath } = properties;
 
-  if (!ibReportPath || !eurUsdPath) {
+  if (!ibReportPath || !eurUsdPath || !resultDirPath) {
     throw invalidPropsError;
   }
-  return { ibReportPath, eurUsdPath };
+
+  return { ibReportPath, eurUsdPath, resultDirPath };
 }

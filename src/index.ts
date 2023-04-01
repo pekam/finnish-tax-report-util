@@ -2,6 +2,7 @@ import { DateTime } from "luxon";
 import { getEurUsdMap } from "./getEurUsd";
 import { readIbTransactionsFromCSV } from "./ib/readIbTransactionsFromCSV";
 import { processTransactions } from "./process-transactions/processTransactions";
+import { writeResult } from "./write-result/writeResult";
 
 /**
  * Input transaction, provided from the broker.
@@ -33,12 +34,8 @@ export interface UnclosedEntry extends HandledTransaction {
 
 const eurUsdMap = getEurUsdMap();
 
-const transactions = readIbTransactionsFromCSV();
+const inputTransactions = readIbTransactionsFromCSV();
 
-const result = processTransactions(transactions, eurUsdMap);
+const finalState = processTransactions(inputTransactions, eurUsdMap);
 
-console.log(transactions.slice(0, 2));
-
-console.log(result);
-
-// console.log(getSummary(transactions).unclosedEntries);
+writeResult(finalState);
