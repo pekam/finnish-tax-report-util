@@ -19,6 +19,6 @@ export function convertTransaction(
     time: dateTime.setZone(finnishTimezone),
     quantity,
     priceUsd,
-    feeUsd,
+    feeUsd: Math.abs(feeUsd),
   };
 }

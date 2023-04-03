@@ -18,7 +18,8 @@ export function generateSummaryCSV(transactions: HandledTransaction[]) {
   const totalLosses = pipe(
     transactions,
     filter((t) => t.closedPnlExcludingFees < 0),
-    sumBy((t) => t.closedPnlExcludingFees)
+    sumBy((t) => t.closedPnlExcludingFees),
+    (negativeLosses) => Math.abs(negativeLosses)
   );
 
   const totalFees = pipe(
