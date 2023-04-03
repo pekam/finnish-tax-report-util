@@ -15,7 +15,7 @@ function transformTransaction({
   symbol,
   time,
   quantity,
-  price,
+  priceUsd,
   eurUsd,
   balanceChangeEurExcludingFees,
   closedPnlExcludingFees,
@@ -25,7 +25,7 @@ function transformTransaction({
   return {
     symbol,
     quantity,
-    "price (USD)": price,
+    "price (USD)": priceUsd,
     "balance change (EUR, excluding fees)": balanceChangeEurExcludingFees,
     "closed profit or loss (EUR, excluding fees)": closedPnlExcludingFees,
     "fee (USD)": feeUsd,

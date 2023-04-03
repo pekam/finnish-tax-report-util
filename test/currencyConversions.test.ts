@@ -3,8 +3,8 @@ import { process } from "./util";
 it("should convert balance changes, fees and pnl to euros", () => {
   const state = process(
     [
-      { quantity: 10, price: 5, dateISO: "2022-01-01" },
-      { quantity: -3, price: 10, dateISO: "2022-01-02" },
+      { quantity: 10, priceUsd: 5, dateISO: "2022-01-01" },
+      { quantity: -3, priceUsd: 10, dateISO: "2022-01-02" },
     ],
 
     // EUR/USD rates:
@@ -23,7 +23,7 @@ it("should convert balance changes, fees and pnl to euros", () => {
           "eurUsd": 2,
           "feeEur": 0.5,
           "feeUsd": 1,
-          "price": 5,
+          "priceUsd": 5,
           "quantity": 10,
           "symbol": "foo",
           "time": "2022-01-01T00:00:00.000+02:00",
@@ -34,7 +34,7 @@ it("should convert balance changes, fees and pnl to euros", () => {
           "eurUsd": 3,
           "feeEur": 0.3333333333333333,
           "feeUsd": 1,
-          "price": 10,
+          "priceUsd": 10,
           "quantity": -3,
           "symbol": "foo",
           "time": "2022-01-02T00:00:00.000+02:00",
@@ -48,7 +48,7 @@ it("should convert balance changes, fees and pnl to euros", () => {
             "eurUsd": 2,
             "feeEur": 0.5,
             "feeUsd": 1,
-            "price": 5,
+            "priceUsd": 5,
             "quantity": 10,
             "remaining": 7,
             "symbol": "foo",
@@ -64,8 +64,8 @@ it("should throw if currency rate not found for transaction date", () => {
   expect(() =>
     process(
       [
-        { quantity: 10, price: 5, dateISO: "2022-01-01" },
-        { quantity: -3, price: 10, dateISO: "2022-01-02" },
+        { quantity: 10, priceUsd: 5, dateISO: "2022-01-01" },
+        { quantity: -3, priceUsd: 10, dateISO: "2022-01-02" },
       ],
       {
         "2022-01-01": 2,

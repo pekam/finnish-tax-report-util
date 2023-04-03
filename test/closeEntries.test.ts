@@ -2,8 +2,8 @@ import { process } from "./util";
 
 it("should reduce entry transaction", () => {
   const state = process([
-    { quantity: 10, price: 5 },
-    { quantity: -3, price: 10 },
+    { quantity: 10, priceUsd: 5 },
+    { quantity: -3, priceUsd: 10 },
   ]);
 
   expect(state).toMatchInlineSnapshot(`
@@ -15,7 +15,7 @@ it("should reduce entry transaction", () => {
           "eurUsd": 1,
           "feeEur": 1,
           "feeUsd": 1,
-          "price": 5,
+          "priceUsd": 5,
           "quantity": 10,
           "symbol": "foo",
           "time": "2022-01-01T00:00:00.000+02:00",
@@ -26,7 +26,7 @@ it("should reduce entry transaction", () => {
           "eurUsd": 1,
           "feeEur": 1,
           "feeUsd": 1,
-          "price": 10,
+          "priceUsd": 10,
           "quantity": -3,
           "symbol": "foo",
           "time": "2022-01-01T00:00:00.000+02:00",
@@ -40,7 +40,7 @@ it("should reduce entry transaction", () => {
             "eurUsd": 1,
             "feeEur": 1,
             "feeUsd": 1,
-            "price": 5,
+            "priceUsd": 5,
             "quantity": 10,
             "remaining": 7,
             "symbol": "foo",
@@ -54,9 +54,9 @@ it("should reduce entry transaction", () => {
 
 it("should reduce entry in two parts and remove entry", () => {
   const state = process([
-    { quantity: 10, price: 5 },
-    { quantity: -3, price: 10 },
-    { quantity: -7, price: 4 },
+    { quantity: 10, priceUsd: 5 },
+    { quantity: -3, priceUsd: 10 },
+    { quantity: -7, priceUsd: 4 },
   ]);
 
   expect(state).toMatchInlineSnapshot(`
@@ -68,7 +68,7 @@ it("should reduce entry in two parts and remove entry", () => {
           "eurUsd": 1,
           "feeEur": 1,
           "feeUsd": 1,
-          "price": 5,
+          "priceUsd": 5,
           "quantity": 10,
           "symbol": "foo",
           "time": "2022-01-01T00:00:00.000+02:00",
@@ -79,7 +79,7 @@ it("should reduce entry in two parts and remove entry", () => {
           "eurUsd": 1,
           "feeEur": 1,
           "feeUsd": 1,
-          "price": 10,
+          "priceUsd": 10,
           "quantity": -3,
           "symbol": "foo",
           "time": "2022-01-01T00:00:00.000+02:00",
@@ -90,7 +90,7 @@ it("should reduce entry in two parts and remove entry", () => {
           "eurUsd": 1,
           "feeEur": 1,
           "feeUsd": 1,
-          "price": 4,
+          "priceUsd": 4,
           "quantity": -7,
           "symbol": "foo",
           "time": "2022-01-01T00:00:00.000+02:00",
@@ -103,9 +103,9 @@ it("should reduce entry in two parts and remove entry", () => {
 
 it("should remove oldest entry and reduce the next entry", () => {
   const state = process([
-    { quantity: 2, price: 5 },
-    { quantity: 10, price: 6 },
-    { quantity: -5, price: 10 },
+    { quantity: 2, priceUsd: 5 },
+    { quantity: 10, priceUsd: 6 },
+    { quantity: -5, priceUsd: 10 },
   ]);
 
   expect(state).toMatchInlineSnapshot(`
@@ -117,7 +117,7 @@ it("should remove oldest entry and reduce the next entry", () => {
           "eurUsd": 1,
           "feeEur": 1,
           "feeUsd": 1,
-          "price": 5,
+          "priceUsd": 5,
           "quantity": 2,
           "symbol": "foo",
           "time": "2022-01-01T00:00:00.000+02:00",
@@ -128,7 +128,7 @@ it("should remove oldest entry and reduce the next entry", () => {
           "eurUsd": 1,
           "feeEur": 1,
           "feeUsd": 1,
-          "price": 6,
+          "priceUsd": 6,
           "quantity": 10,
           "symbol": "foo",
           "time": "2022-01-01T00:00:00.000+02:00",
@@ -139,7 +139,7 @@ it("should remove oldest entry and reduce the next entry", () => {
           "eurUsd": 1,
           "feeEur": 1,
           "feeUsd": 1,
-          "price": 10,
+          "priceUsd": 10,
           "quantity": -5,
           "symbol": "foo",
           "time": "2022-01-01T00:00:00.000+02:00",
@@ -153,7 +153,7 @@ it("should remove oldest entry and reduce the next entry", () => {
             "eurUsd": 1,
             "feeEur": 1,
             "feeUsd": 1,
-            "price": 6,
+            "priceUsd": 6,
             "quantity": 10,
             "remaining": 7,
             "symbol": "foo",
@@ -171,8 +171,8 @@ it("should throw when single transaction closes and opens position", () => {
   // it throws instead of causing unexpected results.
   expect(() =>
     process([
-      { quantity: 2, price: 5 },
-      { quantity: -5, price: 10 },
+      { quantity: 2, priceUsd: 5 },
+      { quantity: -5, priceUsd: 10 },
     ])
   ).toThrowError();
 });

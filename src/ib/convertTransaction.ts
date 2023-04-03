@@ -6,13 +6,19 @@ const finnishTimezone = "Europe/Helsinki";
 export function convertTransaction(
   rawTransaction: ReturnType<typeof ibTradeRowToObject>
 ): Transaction {
-  const { symbol, dateTime, quantity, fee: feeUsd, price } = rawTransaction;
+  const {
+    symbol,
+    dateTime,
+    quantity,
+    fee: feeUsd,
+    price: priceUsd,
+  } = rawTransaction;
 
   return {
     symbol,
     time: dateTime.setZone(finnishTimezone),
     quantity,
-    price,
+    priceUsd,
     feeUsd,
   };
 }

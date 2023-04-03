@@ -9,18 +9,18 @@ const defaultEurUsdMap: EurUsdMap = { [defaultDate]: 1 };
 
 export interface MockTransactionArgs {
   quantity: number;
-  price: number;
+  priceUsd: number;
   dateISO?: string;
 }
 
 function createTransaction({
-  price,
+  priceUsd,
   quantity,
   dateISO,
 }: MockTransactionArgs): Transaction {
   return {
     symbol: "foo",
-    price,
+    priceUsd,
     quantity,
     time: DateTime.fromISO(dateISO || defaultDate),
     feeUsd: 1,

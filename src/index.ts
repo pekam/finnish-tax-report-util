@@ -14,7 +14,7 @@ export interface Transaction {
    * Negative if selling
    */
   quantity: number;
-  price: number;
+  priceUsd: number;
   feeUsd: number;
 }
 
