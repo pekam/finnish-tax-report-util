@@ -9,15 +9,15 @@ import { generateTransactionsCSV } from "./generateTransactionsCSV";
 export function writeResult(state: State) {
   const { resultDirPath } = getProperties();
 
+  const writeToResultDir = (fileName: string, content: string) =>
+    fs.writeFileSync(path.join(resultDirPath, fileName), content);
+
   const transactionsCSV = generateTransactionsCSV(state.handled);
-  fs.writeFileSync(
-    path.join(resultDirPath, "transactions.csv"),
-    transactionsCSV
-  );
+  writeToResultDir("transactions.csv", transactionsCSV);
 
   const positionsCSV = generatePositionsCSV(state.unclosed);
-  fs.writeFileSync(path.join(resultDirPath, "positions.csv"), positionsCSV);
+  writeToResultDir("positions.csv", positionsCSV);
 
   const summaryCSV = generateSummaryCSV(state.handled);
-  fs.writeFileSync(path.join(resultDirPath, "summary.csv"), summaryCSV);
+  writeToResultDir("summary.csv", summaryCSV);
 }
