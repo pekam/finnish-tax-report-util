@@ -1,12 +1,18 @@
-# Finnish tax report generator for Interactive Brokers
+# Finnish tax report util
+
+Currently this project only supports generating reports for stock trades
+executed via Interactive Brokers.
+
+## Steps
 
 1. Clone this project
-2. Download activity statement for the full year as a CSV-file from IB
+2. Download activity statement for the full year as a CSV-file from Interactive
+   Brokers
 3. Download EUR/USD daily price data as a CSV-file from
    https://www.investing.com/currencies/eur-usd-historical-data
-4. Add a file named `properties.json` to the root of this project, with file
-   paths to your downloaded files, and a path to a directory where the result
-   files should be written:
+4. Create an empty directory where the result files will be written
+5. Add a file named `properties.json` to the root of this project, with file
+   paths to your downloaded files and the result directory you just created:
 
 ```json
 {
@@ -16,8 +22,23 @@
 }
 ```
 
-5. Install dependencies with `npm install`
-6. Execute the program with `npm start`
+6. Install dependencies with `npm install`
+7. Execute the program with `npm start`
+
+This will generate several files in the result directory:
+
+- `transactions.csv` contains each transaction with profit/loss calculated with
+  the FIFO principle and values converted to euros. This data can be included as
+  an attachment to the tax report. Unfortunately vero.fi does not support CSV
+  format, so you can e.g. import the data to a rick text document as a table.
+- `summary.csv` contains the values that need to be reported to vero.fi besides
+  the transactions: total sales, total wins and total losses. Fees (commissions)
+  are on a separate row, and they can be e.g. summed into the losses when
+  reporting the value to vero.fi.
+- `positions.csv` contains the positions left open at the end of the year. These
+  need to be reported one by one to vero.fi. The file contains also all the
+  entry transactions for those positions, which will be needed to calculate the
+  profits and losses for the upcoming years.
 
 ## Limitations
 
