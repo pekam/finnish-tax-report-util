@@ -1,7 +1,7 @@
 {
-  "name": "ib-tax",
+  "name": "finnish-tax-report-util",
   "version": "1.0.0",
-  "description": "Run with ts-node",
+  "description": "Generate reports for Finnish tax administration (vero.fi)",
   "scripts": {
     "start": "ts-node src/index.ts",
     "test": "jest"
