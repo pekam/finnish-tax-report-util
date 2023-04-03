@@ -33,8 +33,9 @@ This will generate several files in the result directory:
   format, so you can e.g. import the data to a rick text document as a table.
 - `summary.csv` contains the values that need to be reported to vero.fi besides
   the transactions: total sales, total wins and total losses. Fees (commissions)
-  are on a separate row, and they can be e.g. summed into the losses when
-  reporting the value to vero.fi.
+  are on a separate row. If you want to simply include them to losses (as I
+  haven't found a definite answer for where the fees should be reported),
+  there's another row that contains the sum of losses and fees.
 - `positions.csv` contains the positions left open at the end of the year. These
   need to be reported one by one to vero.fi. The file contains also all the
   entry transactions for those positions, which will be needed to calculate the

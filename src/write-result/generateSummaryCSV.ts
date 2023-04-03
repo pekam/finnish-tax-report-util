@@ -32,6 +32,7 @@ export function generateSummaryCSV(transactions: HandledTransaction[]) {
     ["total wins (EUR)", totalWins],
     ["total losses (EUR)", totalLosses],
     ["total fees (EUR)", totalFees],
+    ["total losses and fees (EUR)", totalLosses + totalFees],
   ]);
 
   return summaryCSV;
