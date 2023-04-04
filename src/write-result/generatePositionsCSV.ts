@@ -1,6 +1,6 @@
 import * as csv from "csv/sync";
 import { flatten, map, mapValues, pipe, sumBy, toPairs, values } from "remeda";
-import { UnclosedEntry } from "..";
+import { HandledTransaction } from "..";
 import { State } from "../process-transactions/processTransactions";
 
 export function generatePositionsCSV(unclosed: State["unclosed"]) {
@@ -24,9 +24,7 @@ export function generatePositionsCSV(unclosed: State["unclosed"]) {
 }
 
 function getTotalPositions(unclosed: State["unclosed"]) {
-  return mapValues(unclosed, (entries) =>
-    sumBy(entries, (e) => e.remainingQuantity)
-  );
+  return mapValues(unclosed, (entries) => sumBy(entries, (e) => e.quantity));
 }
 
 function transformUnclosedEntry({
@@ -38,11 +36,11 @@ function transformUnclosedEntry({
   closedPnlExcludingFees,
   feeUsd,
   feeEur,
-  remainingQuantity,
-}: UnclosedEntry) {
+  quantity,
+}: HandledTransaction) {
   return {
     symbol,
-    "remaining quantity": remainingQuantity,
+    "remaining quantity": quantity,
     "price (USD)": priceUsd,
     "balance change (EUR, excluding fees)": balanceChangeEurExcludingFees,
     "closed profit or loss (EUR, excluding fees)": closedPnlExcludingFees,

@@ -32,16 +32,6 @@ export interface HandledTransaction extends TransactionWithEuros {
   closedPnlExcludingFees: number;
 }
 
-/**
- * Used to keep track of entry transactions which are not yet closed based on
- * the FIFO principle. If part of the entry is closed, both remainingQuantity
- * and balanceChangeEurExcludingFees are reduced to reflect the unclosed part.
- */
-export interface UnclosedEntry extends Omit<HandledTransaction, "quantity"> {
-  originalQuantity: number;
-  remainingQuantity: number;
-}
-
 const eurUsdMap = getEurUsdMap();
 
 const inputTransactions = readIbTransactionsFromCSV();

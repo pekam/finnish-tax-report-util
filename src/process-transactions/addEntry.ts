@@ -1,4 +1,3 @@
-import { omit } from "remeda";
 import { HandledTransaction, TransactionWithEuros } from "..";
 import { State } from "./processTransactions";
 
@@ -18,9 +17,7 @@ export function addEntry(
       [symbol]: [
         ...(state.unclosed[symbol] || []),
         {
-          ...omit(handled, ["quantity"]),
-          originalQuantity: handled.quantity,
-          remainingQuantity: handled.quantity,
+          ...handled,
         },
       ],
     },
