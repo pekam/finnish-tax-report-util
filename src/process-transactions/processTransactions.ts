@@ -1,6 +1,7 @@
-import { map, pipe, reduce, sumBy } from "remeda";
+import { map, pipe, reduce } from "remeda";
 import { HandledTransaction, Transaction, TransactionWithEuros } from "..";
 import { EurUsdMap } from "../getEurUsd";
+import { getPosition } from "../util";
 import { addEntry } from "./addEntry";
 import { addEurProps } from "./addEurProps";
 import { closeEntries } from "./closeEntries";
@@ -36,15 +37,11 @@ export function processTransactions(
 }
 
 function handleTransaction(state: State, transaction: TransactionWithEuros) {
-  const balance = getBalance(state, transaction.symbol);
+  const position = getPosition(state, transaction.symbol);
 
-  if (balance === 0 || transaction.quantity > 0 === balance > 0) {
+  if (position === 0 || transaction.quantity > 0 === position > 0) {
     return addEntry(state, transaction);
   } else {
     return closeEntries(state, transaction);
   }
-}
-
-function getBalance(state: State, symbol: string): number {
-  return sumBy(state.unclosed[symbol] || [], (t) => t.quantity);
 }

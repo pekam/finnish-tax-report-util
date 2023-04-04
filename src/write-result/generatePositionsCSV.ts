@@ -1,12 +1,13 @@
 import * as csv from "csv/sync";
-import { flatten, map, mapValues, pipe, sumBy, toPairs, values } from "remeda";
+import { flatten, map, pipe, toPairs, values } from "remeda";
 import { HandledTransaction } from "..";
 import { State } from "../process-transactions/processTransactions";
+import { getPositionsMap } from "../util";
 
 export function generatePositionsCSV(unclosed: State["unclosed"]) {
   const totalPositionsCSV = pipe(
     unclosed,
-    getTotalPositions,
+    getPositionsMap,
     toPairs,
     csv.stringify,
     (csvString) => "symbol,position\n" + csvString
@@ -21,10 +22,6 @@ export function generatePositionsCSV(unclosed: State["unclosed"]) {
   );
 
   return totalPositionsCSV + "\n" + unclosedTransactionsCSV;
-}
-
-function getTotalPositions(unclosed: State["unclosed"]) {
-  return mapValues(unclosed, (entries) => sumBy(entries, (e) => e.quantity));
 }
 
 function transformUnclosedEntry({
