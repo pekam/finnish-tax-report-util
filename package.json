@@ -4,7 +4,8 @@
   "description": "Generate reports for Finnish tax administration (vero.fi)",
   "scripts": {
     "start": "ts-node src/index.ts",
-    "test": "jest"
+    "test": "jest",
+    "update-snapshots": "jest --update-snapshot"
   },
   "author": "",
   "dependencies": {
