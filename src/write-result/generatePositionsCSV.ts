@@ -37,7 +37,7 @@ function transformUnclosedEntry({
   closedPnlExcludingFees,
   feeUsd,
   feeEur,
-  remaining,
+  remainingQuantity: remaining,
 }: UnclosedEntry) {
   return {
     symbol,

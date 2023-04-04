@@ -29,7 +29,7 @@ export interface HandledTransaction extends TransactionWithEuros {
 }
 
 export interface UnclosedEntry extends HandledTransaction {
-  remaining: number;
+  remainingQuantity: number;
 }
 
 const eurUsdMap = getEurUsdMap();

@@ -50,7 +50,7 @@ it("should convert balance changes, fees and pnl to euros", () => {
             "feeUsd": 1,
             "priceUsd": 5,
             "quantity": 10,
-            "remaining": 7,
+            "remainingQuantity": 7,
             "symbol": "foo",
             "time": "2022-01-01T00:00:00.000+02:00",
           },

@@ -16,7 +16,7 @@ export function addEntry(
       ...state.unclosed,
       [symbol]: [
         ...(state.unclosed[symbol] || []),
-        { ...handled, remaining: handled.quantity },
+        { ...handled, remainingQuantity: handled.quantity },
       ],
     },
     handled: [...state.handled, handled],

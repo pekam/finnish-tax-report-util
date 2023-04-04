@@ -20,7 +20,9 @@ export function closeEntries(state: State, transaction: TransactionWithEuros) {
     }
     const oldestUnclosed = unclosed[0];
 
-    const oldestUnclosedAbsoluteRemaining = Math.abs(oldestUnclosed.remaining);
+    const oldestUnclosedAbsoluteRemaining = Math.abs(
+      oldestUnclosed.remainingQuantity
+    );
 
     // Remove oldest entry, reduce remaining
     if (oldestUnclosedAbsoluteRemaining <= Math.abs(remaining)) {
@@ -34,7 +36,7 @@ export function closeEntries(state: State, transaction: TransactionWithEuros) {
       if (!unclosed.length) {
         delete state.unclosed[transaction.symbol];
       }
-      remaining += oldestUnclosed.remaining;
+      remaining += oldestUnclosed.remainingQuantity;
     }
 
     // Reduce oldest entry, finish
@@ -45,7 +47,7 @@ export function closeEntries(state: State, transaction: TransactionWithEuros) {
         closedQuantityProportion * oldestUnclosed.balanceChangeEurExcludingFees
       );
 
-      oldestUnclosed.remaining += remaining;
+      oldestUnclosed.remainingQuantity += remaining;
       remaining = 0;
     }
   }
