@@ -1,6 +1,6 @@
 import { identity, sumBy } from "remeda";
 import { HandledTransaction, TransactionWithEuros } from "..";
-import { getBalanceChangeEurExcludingFees } from "./addEurProps";
+import { getBalanceChangeEurExcludingFees } from "../util";
 import { State } from "./processTransactions";
 
 export function closeEntries(state: State, transaction: TransactionWithEuros) {

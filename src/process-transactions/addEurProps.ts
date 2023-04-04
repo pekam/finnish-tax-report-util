@@ -1,5 +1,6 @@
 import { Transaction, TransactionWithEuros } from "..";
 import { EurUsdMap, getEurUsd } from "../getEurUsd";
+import { getBalanceChangeEurExcludingFees, toEuros } from "../util";
 
 export const addEurProps =
   (eurUsdMap: EurUsdMap) =>
@@ -19,20 +20,3 @@ export const addEurProps =
       feeEur,
     };
   };
-
-export function toEuros({ usd, eurUsd }: { usd: number; eurUsd: number }) {
-  return usd / eurUsd;
-}
-
-export function getBalanceChangeEurExcludingFees({
-  priceUsd,
-  eurUsd,
-  quantity,
-}: {
-  priceUsd: number;
-  eurUsd: number;
-  quantity: number;
-}) {
-  const balanceChangeUsd = -quantity * priceUsd;
-  return toEuros({ usd: balanceChangeUsd, eurUsd });
-}
