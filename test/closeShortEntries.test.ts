@@ -35,7 +35,7 @@ it("should reduce entry transaction (short)", () => {
       "unclosed": {
         "foo": [
           {
-            "balanceChangeEurExcludingFees": 100,
+            "balanceChangeEurExcludingFees": 70,
             "closedPnlExcludingFees": 0,
             "eurUsd": 1,
             "feeEur": 1,
@@ -147,7 +147,7 @@ it("should remove oldest entry and reduce the next entry (short)", () => {
       "unclosed": {
         "foo": [
           {
-            "balanceChangeEurExcludingFees": 60,
+            "balanceChangeEurExcludingFees": 42,
             "closedPnlExcludingFees": 0,
             "eurUsd": 1,
             "feeEur": 1,

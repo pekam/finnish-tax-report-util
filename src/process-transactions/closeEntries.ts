@@ -1,5 +1,6 @@
 import { identity, sumBy } from "remeda";
 import { HandledTransaction, TransactionWithEuros } from "..";
+import { getBalanceChangeEurExcludingFees } from "./addEurProps";
 import { State } from "./processTransactions";
 
 export function closeEntries(state: State, transaction: TransactionWithEuros) {
@@ -29,9 +30,7 @@ export function closeEntries(state: State, transaction: TransactionWithEuros) {
       const closedQuantityProportion =
         oldestUnclosedAbsoluteRemaining /
         Math.abs(oldestUnclosed.originalQuantity);
-      entryBalanceChangesEur.push(
-        closedQuantityProportion * oldestUnclosed.balanceChangeEurExcludingFees
-      );
+      entryBalanceChangesEur.push(oldestUnclosed.balanceChangeEurExcludingFees);
 
       unclosed.shift();
       if (!unclosed.length) {
@@ -42,13 +41,15 @@ export function closeEntries(state: State, transaction: TransactionWithEuros) {
 
     // Reduce oldest entry, finish
     else {
-      const closedQuantityProportion =
-        Math.abs(remaining) / Math.abs(oldestUnclosed.originalQuantity);
-      entryBalanceChangesEur.push(
-        closedQuantityProportion * oldestUnclosed.balanceChangeEurExcludingFees
-      );
+      const closedBalanceChange = getBalanceChangeEurExcludingFees({
+        eurUsd: oldestUnclosed.eurUsd,
+        priceUsd: oldestUnclosed.priceUsd,
+        quantity: -remaining,
+      });
+      entryBalanceChangesEur.push(closedBalanceChange);
 
       oldestUnclosed.remainingQuantity += remaining;
+      oldestUnclosed.balanceChangeEurExcludingFees -= closedBalanceChange;
       remaining = 0;
     }
   }

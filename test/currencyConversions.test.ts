@@ -43,7 +43,7 @@ it("should convert balance changes, fees and pnl to euros", () => {
       "unclosed": {
         "foo": [
           {
-            "balanceChangeEurExcludingFees": -25,
+            "balanceChangeEurExcludingFees": -17.5,
             "closedPnlExcludingFees": 0,
             "eurUsd": 2,
             "feeEur": 0.5,

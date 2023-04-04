@@ -20,6 +20,10 @@ export interface Transaction {
 
 export interface TransactionWithEuros extends Transaction {
   eurUsd: number;
+  /**
+   * How many euros were lost (if buying) or gained (if selling) with this
+   * transaction.
+   */
   balanceChangeEurExcludingFees: number;
   feeEur: number;
 }
@@ -28,6 +32,11 @@ export interface HandledTransaction extends TransactionWithEuros {
   closedPnlExcludingFees: number;
 }
 
+/**
+ * Used to keep track of entry transactions which are not yet closed based on
+ * the FIFO principle. If part of the entry is closed, both remainingQuantity
+ * and balanceChangeEurExcludingFees are reduced to reflect the unclosed part.
+ */
 export interface UnclosedEntry extends Omit<HandledTransaction, "quantity"> {
   originalQuantity: number;
   remainingQuantity: number;
