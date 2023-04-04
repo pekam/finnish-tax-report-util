@@ -28,7 +28,8 @@ export interface HandledTransaction extends TransactionWithEuros {
   closedPnlExcludingFees: number;
 }
 
-export interface UnclosedEntry extends HandledTransaction {
+export interface UnclosedEntry extends Omit<HandledTransaction, "quantity"> {
+  originalQuantity: number;
   remainingQuantity: number;
 }
 

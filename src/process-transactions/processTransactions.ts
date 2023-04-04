@@ -42,5 +42,5 @@ function handleTransaction(state: State, transaction: TransactionWithEuros) {
 }
 
 function getBalance(state: State, symbol: string): number {
-  return sumBy(state.unclosed[symbol] || [], (t) => t.quantity);
+  return sumBy(state.unclosed[symbol] || [], (t) => t.remainingQuantity);
 }

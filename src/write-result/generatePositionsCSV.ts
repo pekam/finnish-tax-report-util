@@ -24,24 +24,25 @@ export function generatePositionsCSV(unclosed: State["unclosed"]) {
 }
 
 function getTotalPositions(unclosed: State["unclosed"]) {
-  return mapValues(unclosed, (entries) => sumBy(entries, (e) => e.quantity));
+  return mapValues(unclosed, (entries) =>
+    sumBy(entries, (e) => e.remainingQuantity)
+  );
 }
 
 function transformUnclosedEntry({
   symbol,
   time,
-  quantity,
   priceUsd,
   eurUsd,
   balanceChangeEurExcludingFees,
   closedPnlExcludingFees,
   feeUsd,
   feeEur,
-  remainingQuantity: remaining,
+  remainingQuantity,
 }: UnclosedEntry) {
   return {
     symbol,
-    quantity: remaining,
+    "remaining quantity": remainingQuantity,
     "price (USD)": priceUsd,
     "balance change (EUR, excluding fees)": balanceChangeEurExcludingFees,
     "closed profit or loss (EUR, excluding fees)": closedPnlExcludingFees,
