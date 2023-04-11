@@ -41,8 +41,11 @@ This will generate several files in the result directory:
   there's another row that contains the sum of losses and fees.
 - `positions.csv` contains the positions left open at the end of the year. These
   need to be reported one by one to vero.fi. The file contains also all the
-  entry transactions for those positions, which will be needed to calculate the
-  profits and losses for the upcoming years.
+  entry transactions for those positions (but the same data is also provided in
+  JSON format).
+- `unclosedEntries.json` contains the entry transactions of open positions which
+  will be needed to calculate next year's profits and losses. The data is in
+  JSON format so it can be easily parsed.
 
 ## Limitations
 

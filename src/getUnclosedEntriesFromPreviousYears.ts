@@ -1,4 +1,8 @@
-import { HandledTransaction } from ".";
+import { mapValues } from "remeda";
+
+import * as fs from "fs";
+import { DateTime } from "luxon";
+import { UnclosedEntriesMap } from "./process-transactions/processTransactions";
 
 /**
  * Edit this if you have unclosed positions from previous years. It should
@@ -7,8 +11,21 @@ import { HandledTransaction } from ".";
  * quantity and balance change should be reduced accordingly), sorted by time so
  * the oldest transactions is first.
  */
-export function getUnclosedEntriesFromPreviousYears(): {
-  [key: string]: HandledTransaction[];
-} {
+export function getUnclosedEntriesFromPreviousYears(): UnclosedEntriesMap {
   return {};
+}
+
+/**
+ * You can use this if you ran this same report generator last year, by
+ * providing path to the 'unclosedEntries.json' file generated back then.
+ */
+function readLastYearsUnclosedPositionsJSON(
+  filePath: string
+): UnclosedEntriesMap {
+  const parsed = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+
+  // Convert time props from string to DateTime
+  return mapValues(parsed, (transactions) =>
+    transactions.map((t: any) => ({ ...t, time: DateTime.fromISO(t.time) }))
+  );
 }

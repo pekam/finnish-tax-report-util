@@ -20,4 +20,7 @@ export function writeResult(state: State) {
 
   const summaryCSV = generateSummaryCSV(state.handled);
   writeToResultDir("summary.csv", summaryCSV);
+
+  const unclosedEntriesJSON = JSON.stringify(state.unclosed);
+  writeToResultDir("unclosedEntries.json", unclosedEntriesJSON);
 }
