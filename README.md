@@ -23,7 +23,10 @@ executed via Interactive Brokers.
 ```
 
 6. Install dependencies with `npm install`
-7. Execute the program with `npm start`
+7. If you had unclosed positions at the start of the year, edit the
+   `getUnclosedEntriesFromPreviousYears.ts` file to provide their entry
+   transactions, so they can be used in the FIFO pnl calculations
+8. Execute the program with `npm start`
 
 This will generate several files in the result directory:
 
