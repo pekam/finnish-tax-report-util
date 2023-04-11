@@ -17,13 +17,15 @@ export interface State {
    * reduced accordingly, and the transaction object will not match the
    * HandledTransaction in State.handled.
    */
-  unclosed: { [key: string]: HandledTransaction[] };
+  unclosed: UnclosedEntriesMap;
 }
+
+export type UnclosedEntriesMap = { [key: string]: TransactionWithEuros[] };
 
 export function processTransactions(
   transactions: Transaction[],
   eurUsdMap: EurUsdMap,
-  unclosedEntriesFromPreviousYears: State["unclosed"]
+  unclosedEntriesFromPreviousYears: UnclosedEntriesMap
 ) {
   const initialState: State = {
     unclosed: unclosedEntriesFromPreviousYears,
