@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
 import { getEurUsdMap } from "./getEurUsd";
+import { getUnclosedEntriesFromPreviousYears } from "./getUnclosedEntriesFromPreviousYears";
 import { readIbTransactionsFromCSV } from "./ib/readIbTransactionsFromCSV";
 import { processTransactions } from "./process-transactions/processTransactions";
 import { writeResult } from "./write-result/writeResult";
@@ -36,6 +37,10 @@ const eurUsdMap = getEurUsdMap();
 
 const inputTransactions = readIbTransactionsFromCSV();
 
-const finalState = processTransactions(inputTransactions, eurUsdMap);
+const finalState = processTransactions(
+  inputTransactions,
+  eurUsdMap,
+  getUnclosedEntriesFromPreviousYears()
+);
 
 writeResult(finalState);

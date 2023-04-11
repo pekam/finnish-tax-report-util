@@ -22,10 +22,11 @@ export interface State {
 
 export function processTransactions(
   transactions: Transaction[],
-  eurUsdMap: EurUsdMap
+  eurUsdMap: EurUsdMap,
+  unclosedEntriesFromPreviousYears: State["unclosed"]
 ) {
   const initialState: State = {
-    unclosed: {},
+    unclosed: unclosedEntriesFromPreviousYears,
     handled: [],
   };
 

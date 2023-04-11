@@ -33,6 +33,7 @@ export function process(
 ) {
   return processTransactions(
     transactionArgs.map(createTransaction),
-    eurUsdMap || defaultEurUsdMap
+    eurUsdMap || defaultEurUsdMap,
+    {}
   );
 }
