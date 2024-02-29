@@ -26,10 +26,12 @@ function transformTransaction({
     symbol,
     quantity,
     "price (USD)": priceUsd,
-    "balance change (EUR, excluding fees)": balanceChangeEurExcludingFees,
-    "closed profit or loss (EUR, excluding fees)": closedPnlExcludingFees,
-    "fee (USD)": feeUsd,
-    "fee (EUR)": feeEur,
+    "balance change (EUR, excluding fees)":
+      balanceChangeEurExcludingFees.toFixed(5),
+    "closed profit or loss (EUR, excluding fees)":
+      closedPnlExcludingFees.toFixed(5),
+    "fee (USD)": feeUsd.toFixed(5),
+    "fee (EUR)": feeEur.toFixed(5),
     time: time.toISO(),
     "EUR/USD": eurUsd,
   };
