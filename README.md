@@ -56,3 +56,6 @@ This will generate several files in the result directory:
     previous long position and enters a short position.
   - This situation should be handled by manually editing the CSV file and
     splitting the row into two rows.
+- Doesn't handle splits or delistings. These are listed in the IB activity
+  statement ("Corporate Actions" in the first column) and have to be handled
+  manually.
