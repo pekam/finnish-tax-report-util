@@ -1,6 +1,6 @@
 import { parse } from "csv/sync";
-import * as fs from "fs";
 import { filter, map, pipe, sortBy } from "remeda";
+import { readFile } from "../file-util";
 import { getProperties } from "../properties";
 import { convertTransaction } from "./convertTransaction";
 import { ibTradeRowToObject } from "./ibTradeRowToObject";
@@ -8,7 +8,7 @@ import { ibTradeRowToObject } from "./ibTradeRowToObject";
 export function readIbTransactionsFromCSV() {
   return pipe(
     getProperties().ibReportPath,
-    (path) => fs.readFileSync(path, "utf8"),
+    readFile,
     (str) =>
       parse(str, {
         relaxColumnCount: true,

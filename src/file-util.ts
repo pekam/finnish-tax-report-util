@@ -2,6 +2,8 @@ import * as fs from "fs";
 import * as path from "path";
 import { getProperties } from "./properties";
 
+export const readFile = (filePath: string) => fs.readFileSync(filePath, "utf8");
+
 export const writeToResultDir = (fileName: string, content: string) => {
   const { resultDirPath } = getProperties();
   if (!resultDirPath?.length) {

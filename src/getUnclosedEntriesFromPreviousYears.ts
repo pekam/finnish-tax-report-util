@@ -1,7 +1,7 @@
 import { mapValues } from "remeda";
 
-import * as fs from "fs";
 import { DateTime } from "luxon";
+import { readFile } from "./file-util";
 import { UnclosedEntriesMap } from "./process-transactions/processTransactions";
 
 /**
@@ -22,7 +22,7 @@ export function getUnclosedEntriesFromPreviousYears(): UnclosedEntriesMap {
 function readLastYearsUnclosedPositionsJSON(
   filePath: string
 ): UnclosedEntriesMap {
-  const parsed = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+  const parsed = JSON.parse(readFile(filePath));
 
   // Convert time props from string to DateTime
   return mapValues(parsed, (transactions) =>

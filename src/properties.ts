@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import path from "path";
+import { readFile } from "./file-util";
 
 export interface Properties {
   ibReportPath: string;
@@ -24,9 +25,7 @@ function readProperties() {
     );
   }
 
-  const properties: Properties = JSON.parse(
-    fs.readFileSync(propertiesFilePath, "utf8")
-  );
+  const properties: Properties = JSON.parse(readFile(propertiesFilePath));
 
   if (
     !properties.ibReportPath ||

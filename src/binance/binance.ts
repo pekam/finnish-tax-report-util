@@ -1,7 +1,6 @@
 import { parse } from "csv/sync";
-import * as fs from "fs";
 import { groupBy, pipe, sumBy } from "remeda";
-import { writeToResultDir } from "../file-util";
+import { readFile, writeToResultDir } from "../file-util";
 import { getProperties } from "../properties";
 
 type RawBinanceTransaction = {
@@ -25,7 +24,7 @@ function run() {
     losingTrades: RawBinanceTransaction[];
   } = pipe(
     getProperties().binanceReportPath,
-    (path) => fs.readFileSync(path, "utf8"),
+    readFile,
     (str): RawBinanceTransaction[] =>
       parse(str, {
         columns: true,
