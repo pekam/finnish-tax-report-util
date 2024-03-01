@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Generate reports for Finnish tax administration (vero.fi)",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "ib": "ts-node src/index.ts",
+    "binance": "ts-node src/binance/binance.ts",
     "test": "jest",
     "update-snapshots": "jest --update-snapshot"
   },

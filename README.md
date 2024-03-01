@@ -1,17 +1,21 @@
 # Finnish tax report util
 
-Currently this project only supports generating reports for stock trades
-executed via Interactive Brokers.
+At the moment this project supports generating reports for trades executed via
+Interactive Brokers and Binance.
 
 ## Steps
 
 1. Clone this project
-2. Download activity statement for the full year as a CSV-file from Interactive
+2. Install dependencies with `npm install`
+
+### For Interactive Brokers
+
+3. Download activity statement for the full year as a CSV-file from Interactive
    Brokers
-3. Download EUR/USD daily price data as a CSV-file from
+4. Download EUR/USD daily price data as a CSV-file from
    https://www.investing.com/currencies/eur-usd-historical-data
-4. Create an empty directory where the result files will be written
-5. Add a file named `properties.json` to the root of this project, with file
+5. Create an empty directory where the result files will be written
+6. Add a file named `properties.json` to the root of this project, with file
    paths to your downloaded files and the result directory you just created:
 
 ```json
@@ -22,11 +26,10 @@ executed via Interactive Brokers.
 }
 ```
 
-6. Install dependencies with `npm install`
 7. If you had unclosed positions at the start of the year, edit the
    `getUnclosedEntriesFromPreviousYears.ts` file to provide their entry
    transactions, so they can be used in the FIFO pnl calculations
-8. Execute the program with `npm start`
+8. Execute the program with `npm run ib`
 
 This will generate several files in the result directory:
 
@@ -47,7 +50,7 @@ This will generate several files in the result directory:
   will be needed to calculate next year's profits and losses. The data is in
   JSON format so it can be easily parsed.
 
-## Limitations
+#### Limitations
 
 - Currently expects USD as the currency used to buy/sell stocks
 - Doesn't handle a situation where a single transaction acts as both an exit and
@@ -59,3 +62,26 @@ This will generate several files in the result directory:
 - Doesn't handle splits or delistings. These are listed in the IB activity
   statement ("Corporate Actions" in the first column) and have to be handled
   manually.
+
+### For Binance
+
+3. Generate and download tax reports for the calendar year at
+   https://www.binance.com/en/tax. These reports already calculate PnL in euros
+   and using the FIFO principle, but the issue is that vero.fi expects separate
+   calculations for winning trades and losing trades.
+4. Add a file named `properties.json` to the root of this project, with file
+   path to "Realized Capital Gains Report" downloaded from Binance, and a
+   directory where the report should be generated:
+
+```json
+{
+  "binanceReportPath": "[your path here]",
+  "resultDirPath": "[your path here]"
+}
+```
+
+5. Execute the program with `npm run binance`
+
+This generates a file that contains the summary values to report to vero.fi,
+separately for winning and losing trades. It also sums up the fees, which can be
+reported to either winning or losing trades in vero.fi.

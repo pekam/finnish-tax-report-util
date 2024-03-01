@@ -3,6 +3,7 @@ import path from "path";
 
 export interface Properties {
   ibReportPath: string;
+  binanceReportPath: string;
   eurUsdPath: string;
   resultDirPath: string;
 }
