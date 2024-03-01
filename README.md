@@ -3,6 +3,10 @@
 At the moment this project supports generating reports for trades executed via
 Interactive Brokers and Binance.
 
+NOTE: I am not an expert in tax matters. The information presented in this
+document is based on my own understanding and may be incorrect. Use of the
+program is at your own risk.
+
 ## Steps
 
 1. Clone this project
